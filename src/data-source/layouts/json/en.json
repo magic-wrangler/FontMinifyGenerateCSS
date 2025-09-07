@@ -1,0 +1,43 @@
+{
+  "header": {
+    "logoUrl": "https://w1.gtimg.cn/wujicode/fx_drop_config/9b3ec3b6d0b77da38afbb9ef19bf0f0b/360172e3_JbTWJUqHu4e.svg",
+    "menu": [
+      {
+        "name": "Help",
+        "url": "/help",
+        "type": "jump"
+      }
+    ]
+  },
+  "footer": {
+    "logoUrl": "https://w1.gtimg.cn/wujicode/fx_drop_config/9b3ec3b6d0b77da38afbb9ef19bf0f0b/360172e3_JbTWJUqHu4e.svg",
+    "menu": [
+      {
+        "name": "SITE",
+        "subMenu": [
+          {
+            "name": "Help",
+            "url": "/help",
+            "type": "jump"
+          }
+        ]
+      },
+      {
+        "name": "SOCIAL",
+        "subMenu": [
+          {
+            "name": "GitHub",
+            "url": "https://github.com/magic-wrangler/ncform-pro",
+            "type": "link"
+          },
+          {
+            "name": "Issues",
+            "url": "https://github.com/magic-wrangler/ncform-pro/issues",
+            "type": "link"
+          }
+        ]
+      }
+    ],
+    "copyright": "©<%= year %> Ncform Pro Magic Wrangler"
+  }
+}

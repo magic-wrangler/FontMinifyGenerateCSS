@@ -1,0 +1,63 @@
+{
+  "header": {
+    "logoUrl": "https://files.wujicode.cn/wupload/fx_drop_config.svg_icon/9058bb2a_GbO0iPDieof.png",
+    "menu": [
+      {
+        "name": "文档",
+        "url": "/docs",
+        "type": "jump"
+      },
+      {
+        "name": "案例",
+        "url": "/examples",
+        "type": "jump"
+      },
+      {
+        "name": "Schema 生成器",
+        "url": "/schema-generator",
+        "type": "jump"
+      }
+    ]
+  },
+  "footer": {
+    "logoUrl": "https://files.wujicode.cn/wupload/fx_drop_config.svg_icon/9058bb2a_GbO0iPDieof.png",
+    "menu": [
+      {
+        "name": "入口",
+        "subMenu": [
+          {
+            "name": "文档",
+            "url": "/docs",
+            "type": "jump"
+          },
+          {
+            "name": "案例",
+            "url": "/examples",
+            "type": "jump"
+          },
+          {
+            "name": "Schema 生成器",
+            "url": "/schema-generator",
+            "type": "jump"
+          }
+        ]
+      },
+      {
+        "name": "反馈",
+        "subMenu": [
+          {
+            "name": "GitHub",
+            "url": "https://github.com/magic-wrangler/ncform-pro",
+            "type": "link"
+          },
+          {
+            "name": "Issues",
+            "url": "https://github.com/magic-wrangler/ncform-pro/issues",
+            "type": "link"
+          }
+        ]
+      }
+    ],
+    "copyright": "<%= year %> Ncform Pro Magic Wrangler"
+  }
+}

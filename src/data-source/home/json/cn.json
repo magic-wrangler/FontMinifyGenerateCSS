@@ -1,0 +1,17 @@
+{
+  "title": "Compress fonts, generate CSS code",
+  "uploadConfig": {
+    "title": "Drag and drop font files here",
+    "desc": "Supports woff, woff2, ttf, otf",
+    "btnTxt": "Select Files"
+  },
+  "textareaconfig": {
+    "placeholder": "Specify characters to include in the subsetted font"
+  },
+  "operationConfig": {
+    "basic": "Basic Characters",
+    "punctuation": "Punctuation",
+    "custom": "Custom"
+  }
+}
+
