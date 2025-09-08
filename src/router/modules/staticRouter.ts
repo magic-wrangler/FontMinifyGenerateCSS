@@ -9,9 +9,9 @@ export const staticRouter: RouteRecordRaw[] = [
     component: () => import('@/views/home/index.vue'),
   },
   {
-    path: `/${ROUTE.DOCS}`,
-    name: ROUTE.DOCS,
-    component: () => import('@/views/docs/index.vue'),
+    path: `/${ROUTE.HELP}`,
+    name: ROUTE.HELP,
+    component: () => import('@/views/help/index.vue'),
   },
 ];
 

@@ -1,0 +1,47 @@
+{
+  "title": "FontMinifyGenerateCSS Instructions & Help",
+  "gettingStarted": {
+    "title": "Getting Started",
+    "desc": "FontMinifyGenerateCSS is a web tool designed to compress font files and generate CSS code for optimal web performance. Follow these steps to effectively use FontMinify:"
+  },
+  "stepByStepGuide": {
+    "title": "Step-by-Step Guide",
+    "stepList": [
+      {
+        "svg": "https://w1.gtimg.cn/wujicode/fx_drop_config/9b3ec3b6d0b77da38afbb9ef19bf0f0b/360172e3_R3Tr96OfH_O.svg",
+        "title": "1. Upload Font Files",
+        "desc": "Click the 'Upload Fonts' button to select the font files you want to compress. FontMinifyGenerateCSS supports various font formats,\n including TTF, OTF, and WOFF."
+      },
+      {
+        "svg": "https://w1.gtimg.cn/wujicode/fx_drop_config/9b3ec3b6d0b77da38afbb9ef19bf0f0b/360172e3_-LYBs8ZjUDq.svg",
+        "title": "2. Specify Text for Subsetting",
+        "desc": "Enter the specific text or characters you want to include in the subsetted font. This ensures that only the necessary glyphs are retained, reducing the file size."
+      },
+      {
+        "svg": "https://w1.gtimg.cn/wujicode/fx_drop_config/9b3ec3b6d0b77da38afbb9ef19bf0f0b/360172e3_0aYMnxI6T-K.svg",
+        "title": "3. Choose Compression Options",
+        "desc": "Choose your desired compression options. FontMinifyGenerateCSS offers various settings to balance file size reduction and font quality. Select the options that best suit your needs."
+      },
+      {
+        "svg": "https://w1.gtimg.cn/wujicode/fx_drop_config/9b3ec3b6d0b77da38afbb9ef19bf0f0b/360172e3_ZfN6gUAodhx.svg",
+        "title": "4. Review and Download Results",
+        "desc": "Review the results of the compression process. FontMinifyGenerateCSS will display the original and compressed file sizes, along with the generated CSS code. Download the compressed font files and CSS code."
+      }
+    ]
+  },
+  "additionalResources": {
+    "title": "Additional Resources",
+    "desc": "For further assistance, please refer to the following resources:",
+    "stepList":[
+      {
+        "svg": "https://w1.gtimg.cn/wujicode/fx_drop_config/9b3ec3b6d0b77da38afbb9ef19bf0f0b/360172e3_yUCKmuNMztL.svg",
+        "title": "Frequently Asked Questions (FAQ)"
+      },
+      {
+        "svg": "https://w1.gtimg.cn/wujicode/fx_drop_config/9b3ec3b6d0b77da38afbb9ef19bf0f0b/360172e3__dnSBxmsQ-r.svg",
+        "title": "Contact Us / Feedback Form"
+      }
+    ]
+  }
+}
+

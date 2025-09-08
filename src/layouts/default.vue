@@ -2,7 +2,7 @@
   <div class="layout">
     <Header />
     <RouterView />
-    <Footer />
+    <Footer :exclude="['help']" />
   </div>
 </template>
 <script setup lang="ts">

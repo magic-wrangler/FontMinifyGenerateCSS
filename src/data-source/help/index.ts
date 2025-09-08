@@ -3,11 +3,11 @@ import CN from './json/cn.json'
 import { Lang } from '@/constant/enums'
 import { getData } from '@/data-source/service'
 
-export const getHomeData = async () => {
+export const getHelpData = async () => {
   const dataMap = {
     [Lang.EN]: EN,
     [Lang.CN]: CN,
   }
 
-  return await getData<Home.RootOject>(dataMap)
+  return await getData<Help.RootObject>(dataMap)
 }

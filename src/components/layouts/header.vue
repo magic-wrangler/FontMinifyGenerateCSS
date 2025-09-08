@@ -15,13 +15,13 @@
         <!-- logo -->
         <a href="./" class="flex items-center gap-8px text-white rounded-8px w-35px h-35px decoration-none">
           <img class="block w-full h-full" :src="header?.logoUrl" />
-          <h2 class="text-white text4-sem m-auto">{{ SITE_NAME }}</h2>
+          <h2 class="text-white text4-sem m-auto mt-0px">{{ SITE_NAME }}</h2>
         </a>
         <div class="flex items-center gap-32px">
           <!-- 菜单 -->
           <div class="flex flex-nowrap items-center gap-20px min-h-fit caption1-sem text-white">
             <span
-              class="cursor-pointer hover:text-color-primary-normal"
+              class="cursor-pointer"
               v-for="item in header?.menu"
               :key="item.url"
               @click="handleMenuClick(item)"

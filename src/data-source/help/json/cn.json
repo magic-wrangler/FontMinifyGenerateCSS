@@ -1,0 +1,46 @@
+{
+  "title": "FontMinifyGenerateCSS 说明&帮助",
+  "gettingStarted": {
+    "title": "开始",
+    "desc": "FontMinifyGenerateCSS是一个web工具，旨在压缩字体文件和生成CSS代码，以获得最佳的web性能。遵循以下步骤可以有效地使用FontMinify："
+  },
+  "stepByStepGuide": {
+    "title": "步骤指南",
+    "stepList": [
+      {
+        "svg": "https://w1.gtimg.cn/wujicode/fx_drop_config/9b3ec3b6d0b77da38afbb9ef19bf0f0b/360172e3_R3Tr96OfH_O.svg",
+        "title": "1. 上传字体文件",
+        "desc": "点击“上传字体”按钮，选择要压缩的字体文件。FontMinifyGenerateCSS支持各种字体格式，包括TTF、OTF和WOFF。"
+      },
+      {
+        "svg": "https://w1.gtimg.cn/wujicode/fx_drop_config/9b3ec3b6d0b77da38afbb9ef19bf0f0b/360172e3_-LYBs8ZjUDq.svg",
+        "title": "2. 指定文本子集",
+        "desc": "输入您想要包含在子集字体中的特定文本或字符。这样可以确保只保留必要的字形，从而减小文件大小。"
+      },
+      {
+        "svg": "https://w1.gtimg.cn/wujicode/fx_drop_config/9b3ec3b6d0b77da38afbb9ef19bf0f0b/360172e3_0aYMnxI6T-K.svg",
+        "title": "3. 选择压缩选项",
+        "desc": "选择所需的压缩选项。FontMinifyGenerateCSS提供各种设置来平衡文件大小减小和字体质量。选择最适合你需要的选项。"
+      },
+      {
+        "svg": "https://w1.gtimg.cn/wujicode/fx_drop_config/9b3ec3b6d0b77da38afbb9ef19bf0f0b/360172e3_ZfN6gUAodhx.svg",
+        "title": "4. 检视及下载结果",
+        "desc": "查看压缩过程的结果。FontMinifyGenerateCSS将显示原始和压缩文件大小，以及生成的CSS代码。下载压缩字体文件和CSS代码。"
+      }
+    ]
+  },
+  "additionalResources": {
+    "title": "额外资源",
+    "desc": "如需进一步协助，请参阅下列资源：",
+    "stepList": [
+      {
+        "svg": "https://w1.gtimg.cn/wujicode/fx_drop_config/9b3ec3b6d0b77da38afbb9ef19bf0f0b/360172e3_yUCKmuNMztL.svg",
+        "title": "常见问题"
+      },
+      {
+        "svg": "https://w1.gtimg.cn/wujicode/fx_drop_config/9b3ec3b6d0b77da38afbb9ef19bf0f0b/360172e3__dnSBxmsQ-r.svg",
+        "title": "联系我们"
+      }
+    ]
+  }
+}

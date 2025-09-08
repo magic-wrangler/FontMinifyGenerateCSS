@@ -63,7 +63,7 @@ export default defineConfig({
         blue: '#0056ea', // 可点击/标题颜色
       },
       primary: {
-        normal: 'var(--ncform-pro-color-primary)',
+        normal: '#273545',
         press: '#089659',
         disable: '#BBF0D0',
         success: '#EBFFF2',
@@ -102,12 +102,12 @@ export default defineConfig({
         main: 'var(--docs-color-text-primary)',
         dark: 'var(--color-text-dark-main)',
         disable: 'rgba(0,0,0,0.24)',
-        auxiliary: 'rgba(0,0,0,0.4)',
         docsPrimary: 'var(--docs-color-text-primary)',
         docsTitle: 'var(--docs-color-text-title)',
         'white-info': 'rgba(0,0,0,0.4)',
         'white-auxiliary': 'rgba(255,255,255,0.64)',
         'white-title': '#FFFFFF',
+        auxiliary: '#97acc4'
       },
       fixed: {
         white: '#FFFFFF',

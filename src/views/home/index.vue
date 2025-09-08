@@ -2,7 +2,7 @@
   <div>
     <!-- 介绍 -->
     <section
-      class="relative h-screen section-inner overflow-x-hidden <md:h-720px"
+      class="relative h-screen section-inner overflow-x-hidden"
     >
       <Container class="h-full">
         <!-- <div class="grid grid-cols-1 gap-24px w-620px <md:w-full">
@@ -25,6 +25,7 @@
         </div>
         <div>
           <UploadFont
+            multiple
             v-model="uploadFiles"
             title="Drag and drop font files here"
             desc="Supports woff, woff2, ttf, otf"
