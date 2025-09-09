@@ -19,7 +19,7 @@
         </a>
         <div class="flex items-center gap-32px">
           <!-- 菜单 -->
-          <div class="flex flex-nowrap items-center gap-20px min-h-fit caption1-sem text-white">
+          <div class="flex flex-nowrap items-center gap-20px min-h-fit text-white text-sm font-medium leading-normal">
             <span
               class="cursor-pointer"
               v-for="item in header?.menu"

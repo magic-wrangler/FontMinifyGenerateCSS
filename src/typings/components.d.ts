@@ -9,13 +9,13 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Container: typeof import('./../components/layouts/container.vue')['default']
-    copy: typeof import('./../components/common/uploadFont copy.vue')['default']
+    FontButton: typeof import('./../components/form/FontButton.vue')['default']
+    FontTextArea: typeof import('./../components/form/FontTextArea.vue')['default']
     Footer: typeof import('./../components/layouts/footer.vue')['default']
     Header: typeof import('./../components/layouts/header.vue')['default']
     Lang: typeof import('./../components/layouts/lang.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     UploadFont: typeof import('./../components/common/uploadFont.vue')['default']
-    'UploadFont copy': typeof import('./../components/common/uploadFont copy.vue')['default']
   }
 }
