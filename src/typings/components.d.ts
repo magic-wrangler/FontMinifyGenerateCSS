@@ -14,6 +14,8 @@ declare module 'vue' {
     Footer: typeof import('./../components/layouts/footer.vue')['default']
     Header: typeof import('./../components/layouts/header.vue')['default']
     Lang: typeof import('./../components/layouts/lang.vue')['default']
+    Loading: typeof import('./../components/common/loading.vue')['default']
+    LoadingContainer: typeof import('./../components/common/loadingContainer.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     UploadFont: typeof import('./../components/common/uploadFont.vue')['default']

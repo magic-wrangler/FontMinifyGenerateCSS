@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-report.brow="'FontMinifyGenerateCSS.home.brow'">
     <!-- 介绍 -->
     <section class="relative min-h-screen section-inner overflow-x-hidden">
       <Container>
@@ -28,6 +28,7 @@
             :is-check="isBasicCharacters"
             @click="handleCheck(FontButtonType.BasicCharacters)"
             btn-text="Basic Characters"
+            v-report.click="'FontMinifyGenerateCSS.home.basicCharacters'"
           />
           <FontButton
             :is-check="isPunctuation"
@@ -40,9 +41,35 @@
         >
           Compression Options
         </h3>
-        <div class="flex flex-col flex-wrap ">
-          <p class="text-white text-base font-medium leading-normal pb-2 px-4 py-3">
-            Include unicode-range in CSS
+        <div class="flex flex-col flex-wrap">
+          <p
+            class="text-white text-base font-medium leading-normal pb-2 px-4 py-3 flex items-center gap-2"
+          >
+            <span>Include unicode-range in CSS</span>
+            <!-- 通过在@font-face规则中添加unicode-range属性，浏览器只会下载包含页面上使用的字符的字体文件，从而减小字体文件大小并提高网页加载速度。
+              基本拉丁字母（英文）：U+0000-007F
+              拉丁文补充：U+0080-00FF
+              基本希腊语：U+0370-03FF
+              中日韩统一表意文字（常用汉字）：U+4E00-9FFF
+              韩文音节：U+AC00-D7AF --> 
+            <Tooltip placement="right" color="#253346">
+              <template #title>
+                <div class="caption1-reg pb-2 font-Space_Grotesk">
+                  By adding the unicode-range attribute in the @font-face rule, the browser will only download the font file containing the characters used on the page, thereby reducing the font file size and improving the web page loading speed.
+                </div>
+                <div class="flex flex-col flex-shrink-0 gap-1 caption1-reg font-Space_Grotesk">
+                  <span> <span class="font-bold">Basic Latin letters (English) : </span>U+0000-007F </span>
+                  <span> <span class="font-bold">Latin supplement: </span>U+0080-00FF </span>
+                  <span> <span class="font-bold">Basic Greek: </span>U+0370-03FF </span>
+                  <span> <span class="font-bold">The unified ideographic script (commonly used Chinese characters) for China, Japan and South Korea: </span>U+4E00-9FFF </span>
+                  <span> <span class="font-bold">Korean syllable:</span>U+AC00-D7AF </span>
+                </div>
+              </template>
+              <img
+                src="https://w1.gtimg.cn/wujicode/fx_drop_config/9b3ec3b6d0b77da38afbb9ef19bf0f0b/360172e3_7Xc7Gms3fAt.svg"
+                class="w-5 h-5 cursor-pointer"
+              />
+            </Tooltip>
           </p>
           <div class="flex flex-wrap gap-3 px-4 py-3">
             <FontButton
@@ -77,84 +104,46 @@
             />
           </div>
         </div>
+        <div class="flex justify-center py-12">
+          <FontButton
+            btn-text="Start Compression"
+            @click="handleGenerate"
+          />
+        </div>
+        <Loading :loading="spinning" mask />
       </Container>
     </section>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useHome } from '@/composition/use-home';
-const { homeInfo } = useHome();
+import { useHome, FontButtonType, UnicodeRange } from '@/composition/use-home';
+import { Tooltip } from 'ant-design-vue';
+
+const {
+  spinning,
+  homeInfo,
+  fontText,
+  isBasicCharacters,
+  isPunctuation,
+  isBasicLatin,
+  isLatinSupplement,
+  isGreek,
+  isCJK,
+  isKorean,
+  uploadFiles,
+  handleCheck,
+  handleCheckUnicodeRange,
+  handleGenerate,
+} = useHome();
+
 console.log(
   '%c🤪 ~ file: /Users/zl_bofeng/Documents/github/ncform-pro/packages/docs/src/views/home.vue:33 [] -> homeInfo : ',
   'color: #557dc',
   homeInfo
 );
 
-enum FontButtonType {
-  BasicCharacters = 'BasicCharacters',
-  Punctuation = 'Punctuation',
-}
 
-enum UnicodeRange {
-  BasicLatin = 'U+0000-007F',
-  LatinSupplement = 'U+0080-00FF',
-  Greek = 'U+0370-03FF',
-  CJK = 'U+4E00-9FFF',
-  Korean = 'U+AC00-D7AF',
-}
-
-const uploadFiles = ref<FileList | null>(null);
-
-const fontText = ref();
-
-const fontButtonType = ref<FontButtonType[]>([]);
-
-const isBasicCharacters = computed(() => {
-  return fontButtonType.value.includes(FontButtonType.BasicCharacters);
-});
-
-const isPunctuation = computed(() => {
-  return fontButtonType.value.includes(FontButtonType.Punctuation);
-});
-
-const handleCheck = (type: FontButtonType) => {
-  if (fontButtonType.value.includes(type)) {
-    fontButtonType.value = fontButtonType.value.filter((item) => item !== type);
-  } else {
-    fontButtonType.value.push(type);
-  }
-};
-
-const unicodeRange = ref<UnicodeRange[]>([]);
-
-const isBasicLatin = computed(() => {
-  return unicodeRange.value.includes(UnicodeRange.BasicLatin);
-});
-
-const isLatinSupplement = computed(() => {
-  return unicodeRange.value.includes(UnicodeRange.LatinSupplement);
-});
-
-const isGreek = computed(() => {
-  return unicodeRange.value.includes(UnicodeRange.Greek);
-});
-
-const isCJK = computed(() => {
-  return unicodeRange.value.includes(UnicodeRange.CJK);
-});
-
-const isKorean = computed(() => {
-  return unicodeRange.value.includes(UnicodeRange.Korean);
-});
-
-const handleCheckUnicodeRange = (type: UnicodeRange) => {
-  if (unicodeRange.value.includes(type)) {
-    unicodeRange.value = unicodeRange.value.filter((item) => item !== type);
-  } else {
-    unicodeRange.value.push(type);
-  }
-};
 
 watchEffect(() => {
   console.log('## fontText ##', fontText.value);
@@ -175,34 +164,5 @@ const handleFileChange = (file: FileList | null) => {
 };
 </script>
 <style scoped>
-/* .aaa {
-  background: radial-gradient(50% 53% at 50% 100%, #171717, #ababab00);
-  bottom: 0;
-  flex: none;
-  height: 307px;
-  left: calc(50.00000000000002% - min(1800px, 100%) / 2);
-  max-width: 1800px;
-  overflow: hidden;
-  position: absolute;
-  width: 100%;
-  z-index: 3;
-}
-.bbb {
-  background: radial-gradient(50% 53% at 50% 100%, #171717, #ababab00);
-  bottom: 0;
-  flex: none;
-  height: 722px;
-  left: calc(50.00000000000002% - min(1800px, 100%) / 2);
-  max-width: 1800px;
-  overflow: hidden;
-  position: absolute;
-  width: 100%;
-  z-index: 3;
-} */
-</style>
-<!-- 暂时这样进行修改样式 -->
-<style>
-.ant-image-preview-mask {
-  backdrop-filter: blur(5px);
-}
+
 </style>

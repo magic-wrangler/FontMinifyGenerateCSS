@@ -6,11 +6,14 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "font": "node script/index.mjs"
   },
   "dependencies": {
     "ant-design-vue": "~4.2.6",
+    "fontmin": "^2.0.2",
     "lodash-es": "^4.17.21",
+    "through2": "^4.0.2",
     "unocss": "^66.4.2",
     "vue": "^3.5.18",
     "vue-i18n": "^11.1.11",
