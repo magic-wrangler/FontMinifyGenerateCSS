@@ -1,0 +1,22 @@
+{
+  "name": "font-minify-server",
+  "version": "1.0.0",
+  "description": "服务器端API，用于处理字体文件和生成压缩后的CSS",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "fontmin": "^0.9.9",
+    "multer": "^1.4.5-lts.1",
+    "node-schedule": "^2.1.1",
+    "through2": "^4.0.2",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

@@ -4,7 +4,9 @@
     class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#253346] text-white text-sm font-bold leading-normal tracking-[0.015em] border-none"
     hover="bg-[#254633]"
     active="filter-brightness-95"
-    :class="{'!bg-[#254633]': isCheck}"
+    :class="{
+      ['!bg-[#254633]']: isCheck || type === 'primary',
+    }"
     @click="onClick"
   >
     <span class="truncate"> <slot>{{ btnText }}</slot></span>
@@ -15,11 +17,13 @@
 interface FontButtonProps {
   btnText?: string;
   isCheck?: boolean;
+  type?: 'primary' | 'secondary' | 'danger' | 'default';
 }
 
 withDefaults(defineProps<FontButtonProps>(), {
   btnText:'按钮',
   isCheck: false,
+  type: 'default',
 });
 
 const emit = defineEmits(['click']);

@@ -1,5 +1,5 @@
 <template>
-  <Transition>
+  <TransitionGroup>
     <Teleport v-if="loading" to="body">
       <div v-if="mask" class="fixed bg-black/64 h-screen w-screen top-0 z-999999" />
       <div
@@ -9,7 +9,7 @@
         <div class="text-white text5-sem">{{ desc }}</div>
       </div>
     </Teleport>
-  </Transition>
+  </TransitionGroup>
 </template>
 
 <script setup lang="ts">

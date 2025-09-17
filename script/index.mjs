@@ -10,11 +10,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const fontDir = path.join(__dirname, 'fonts');
-console.log('%c🤪 ~ file: index.mjs:12 [] -> fontDir : ', 'color: #310e2', fontDir);
 
 // 获取所有字体文件夹
 const fontDirList = fs.readdirSync(fontDir).map((item) => path.join(fontDir, item));
-console.log('%c🤪 ~ file: index.mjs:15 [] -> fontDirList : ', 'color: #112324', fontDirList);
 
 fontDirList.forEach((item) => {
   // 忽略隐藏文件
@@ -25,7 +23,6 @@ fontDirList.forEach((item) => {
   const fontFile = fileList.filter((item) => /.*.ttf$/.test(item))[0];
   // 从文件夹下的index.txt中提取，目标字体
   const inputFile = fs.readFileSync(path.join(item, 'index.txt'), 'utf8');
-  console.log('%c🤪 ~ file: index.mjs:26 [] -> inputFile : ', 'color: #96a8d7', inputFile);
 
   const fontmin = new Fontmin()
     // 读取目标字体文件
@@ -48,7 +45,6 @@ fontDirList.forEach((item) => {
     // 进一步处理css文件，生成目标less文件
     .use(
       through.obj(function (file, encode, cb) {
-        console.log('%c🤪 ~ file: index.mjs:49 [] -> file : ', 'color: #d2c8e1', file);
         // 只处理.css后缀的文件
         if (/\.css$/.test(file.path)) {
           // 将.css后缀改为.less后缀

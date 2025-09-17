@@ -26,12 +26,6 @@ interface ReportDirectiveValue {
 // 定义指令
 const reportDirective: Directive = {
   mounted(el: HTMLElement, binding: DirectiveBinding) {
-    console.log('%c🤪 ~ file: report.ts:28 [] -> el : ', 'color: #c3dc0b', el);
-    console.log(
-      '%c🤪 ~ file: report.ts:28 [] -> binding : ',
-      'color: #627369',
-      binding
-    );
     const { value, modifiers } = binding;
 
     // 处理不同类型的值

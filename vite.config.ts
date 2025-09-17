@@ -39,6 +39,18 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       '~@': '/assets/',
+      'subset-font': 'subset-font/browser',
+    },
+  },
+  server: {
+    cors: true,
+    // 代理跨域
+    proxy: {
+      api: {
+        target: 'http://localhost:3000/',
+        changeOrigin: true,
+        // rewrite: path => path.replace(/^\/api/, "")
+      },
     },
   },
   build: {

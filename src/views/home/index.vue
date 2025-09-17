@@ -12,7 +12,7 @@
             v-model="uploadFiles"
             title="Drag and drop font files here"
             desc="Supports woff, woff2, ttf, otf"
-            @change="handleFileChange"
+            @change="(e: any) => handleFileChange(e)"
           />
         </div>
         <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
@@ -104,8 +104,9 @@
             />
           </div>
         </div>
-        <div class="flex justify-center py-12">
+        <div class="flex justify-center pt-12">
           <FontButton
+            type="primary"
             btn-text="Start Compression"
             @click="handleGenerate"
           />
@@ -135,33 +136,14 @@ const {
   handleCheck,
   handleCheckUnicodeRange,
   handleGenerate,
+  handleFileChange,
 } = useHome();
-
-console.log(
-  '%c🤪 ~ file: /Users/zl_bofeng/Documents/github/ncform-pro/packages/docs/src/views/home.vue:33 [] -> homeInfo : ',
-  'color: #557dc',
-  homeInfo
-);
-
-
 
 watchEffect(() => {
   console.log('## fontText ##', fontText.value);
   console.log('## uploadFiles ##', uploadFiles.value);
 });
 
-const handleFileChange = (file: FileList | null) => {
-  console.log(
-    '%c🤪 ~ file: index.vue:48 [] -> uploadFiles : ',
-    'color: #372f1e',
-    uploadFiles.value
-  );
-  console.log(
-    '%c🤪 ~ file: index.vue:50 [] -> file : ',
-    'color: #1e498b',
-    file
-  );
-};
 </script>
 <style scoped>
 

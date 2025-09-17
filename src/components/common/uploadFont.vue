@@ -155,76 +155,76 @@ watch(() => props.modelValue, (newFiles) => {
 /**
  * 切换显示文件内容
  */
-const toggleFileContent = (index: number) => {
-  const fileInfo = fileInfoList.value[index];
-  if (!fileInfo) return;
+// const toggleFileContent = (index: number) => {
+//   const fileInfo = fileInfoList.value[index];
+//   if (!fileInfo) return;
   
-  // 切换显示状态
-  fileInfo.showContent = !fileInfo.showContent;
+//   // 切换显示状态
+//   fileInfo.showContent = !fileInfo.showContent;
   
-  // 如果是显示内容且内容为空，则读取文件内容
-  if (fileInfo.showContent && !fileInfo.content && !fileInfo.loading && !fileInfo.error) {
-    readFileContent(index);
-  }
-};
+//   // 如果是显示内容且内容为空，则读取文件内容
+//   if (fileInfo.showContent && !fileInfo.content && !fileInfo.loading && !fileInfo.error) {
+//     readFileContent(index);
+//   }
+// };
 
 /**
  * 读取文件内容
  */
-const readFileContent = async (index: number) => {
-  const fileInfo = fileInfoList.value[index];
-  if (!fileInfo || fileInfo.loading) return;
+// const readFileContent = async (index: number) => {
+//   const fileInfo = fileInfoList.value[index];
+//   if (!fileInfo || fileInfo.loading) return;
   
-  fileInfo.loading = true;
-  fileInfo.error = null;
+//   fileInfo.loading = true;
+//   fileInfo.error = null;
   
-  // 判断文件类型，字体文件通常是二进制文件
-  const isFontFile = /\.(woff|woff2|ttf|otf)$/i.test(fileInfo.name);
+//   // 判断文件类型，字体文件通常是二进制文件
+//   const isFontFile = /\.(woff|woff2|ttf|otf)$/i.test(fileInfo.name);
   
-  try {
-    if (isFontFile) {
-      // 对于字体文件，使用专门的函数处理
-      try {
-        const fontInfo = await readFontFileContent(fileInfo.file);
-        fileInfo.content = fontInfo;
-        fileInfo.isBinary = false; // 我们显示的是文本信息，所以设为false
-      } catch (error) {
-        fileInfo.error = error as string;
-        fileInfo.isBinary = true;
-      }
-    } else {
-      // 其他文件尝试读取为文本
-      const reader = new FileReader();
+//   try {
+//     if (isFontFile) {
+//       // 对于字体文件，使用专门的函数处理
+//       try {
+//         const fontInfo = await readFontFileContent(fileInfo.file);
+//         fileInfo.content = fontInfo;
+//         fileInfo.isBinary = false; // 我们显示的是文本信息，所以设为false
+//       } catch (error) {
+//         fileInfo.error = error as string;
+//         fileInfo.isBinary = true;
+//       }
+//     } else {
+//       // 其他文件尝试读取为文本
+//       const reader = new FileReader();
       
-      reader.onload = (e) => {
-        fileInfo.loading = false;
+//       reader.onload = (e) => {
+//         fileInfo.loading = false;
         
-        try {
-          const content = e.target?.result as string;
-          fileInfo.content = content;
-          fileInfo.isBinary = false;
-        } catch (error) {
-          fileInfo.error = '无法读取文件内容';
-          console.error('读取文件内容错误:', error);
-        }
-      };
+//         try {
+//           const content = e.target?.result as string;
+//           fileInfo.content = content;
+//           fileInfo.isBinary = false;
+//         } catch (error) {
+//           fileInfo.error = '无法读取文件内容';
+//           console.error('读取文件内容错误:', error);
+//         }
+//       };
       
-      reader.onerror = () => {
-        fileInfo.loading = false;
-        fileInfo.error = '读取文件失败';
-        console.error('读取文件失败');
-      };
+//       reader.onerror = () => {
+//         fileInfo.loading = false;
+//         fileInfo.error = '读取文件失败';
+//         console.error('读取文件失败');
+//       };
       
-      reader.readAsText(fileInfo.file);
-      return; // 异步读取，直接返回
-    }
-  } catch (error) {
-    fileInfo.error = '无法读取此类型的文件';
-    console.error('读取文件错误:', error);
-  }
+//       reader.readAsText(fileInfo.file);
+//       return; // 异步读取，直接返回
+//     }
+//   } catch (error) {
+//     fileInfo.error = '无法读取此类型的文件';
+//     console.error('读取文件错误:', error);
+//   }
   
-  fileInfo.loading = false; // 确保设置loading状态为false
-};
+//   fileInfo.loading = false; // 确保设置loading状态为false
+// };
 
 /**
  * 格式化文件大小
@@ -284,10 +284,11 @@ const deleteFile = (index: number) => {
   if (fileInputRef.value) {
     fileInputRef.value.files = updatedFiles;
   }
-  
-  // 触发事件
-  emit('change', updatedFiles);
+
+  // 触发v-model更新事件
   emit('update:modelValue', updatedFiles);
+  // 触发事件
+  // emit('change', updatedFiles);
 };
 
 // input 上传文件Ref
@@ -377,7 +378,7 @@ const processDirectoryEntry = (
 ) => {
   if (entry.isDirectory) {
     const directoryReader = entry.createReader();
-    let hasValidFilesInDir = false;
+    // let hasValidFilesInDir = false;
 
     // 递归读取目录内容
     const readEntries = () => {
@@ -403,7 +404,7 @@ const processDirectoryEntry = (
             subEntry.file((file: File) => {
               if (isValidFileType(file.name, acceptTypes)) {
                 validFiles.push(file);
-                hasValidFilesInDir = true;
+                // hasValidFilesInDir = true;
               }
 
               pendingEntries--;
@@ -631,35 +632,35 @@ const processValidFiles = (validFiles: File[], hasDirectories: boolean) => {
   }
 };
 
-/**
- * 读取字体文件内容并解析
- */
-const readFontFileContent = (file: File): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    // 对于字体文件，我们可以尝试提取一些基本信息
-    const reader = new FileReader();
+// /**
+//  * 读取字体文件内容并解析
+//  */
+// const readFontFileContent = (file: File): Promise<string> => {
+//   return new Promise((resolve, reject) => {
+//     // 对于字体文件，我们可以尝试提取一些基本信息
+//     const reader = new FileReader();
     
-    reader.onload = () => {
-      try {
-        // 这里可以添加字体文件解析逻辑
-        // 由于字体文件是二进制的，我们可以返回一些基本信息
-        const fontInfo = `字体文件: ${file.name}\n` +
-                        `大小: ${formatFileSize(file.size)}\n` +
-                        `类型: ${getFileExtension(file.name)}\n` +
-                        `上传时间: ${new Date().toLocaleString()}`;
-        resolve(fontInfo);
-      } catch (error) {
-        reject('无法解析字体文件');
-      }
-    };
+//     reader.onload = () => {
+//       try {
+//         // 这里可以添加字体文件解析逻辑
+//         // 由于字体文件是二进制的，我们可以返回一些基本信息
+//         const fontInfo = `字体文件: ${file.name}\n` +
+//                         `大小: ${formatFileSize(file.size)}\n` +
+//                         `类型: ${getFileExtension(file.name)}\n` +
+//                         `上传时间: ${new Date().toLocaleString()}`;
+//         resolve(fontInfo);
+//       } catch (error) {
+//         reject('无法解析字体文件');
+//       }
+//     };
     
-    reader.onerror = () => reject('读取文件失败');
+//     reader.onerror = () => reject('读取文件失败');
     
-    // 读取文件头部数据
-    const blob = file.slice(0, Math.min(file.size, 1024 * 10)); // 读取前10KB
-    reader.readAsArrayBuffer(blob);
-  });
-};
+//     // 读取文件头部数据
+//     const blob = file.slice(0, Math.min(file.size, 1024 * 10)); // 读取前10KB
+//     reader.readAsArrayBuffer(blob);
+//   });
+// };
 
 // 为虚线区域添加事件监听
 onMounted(() => {
