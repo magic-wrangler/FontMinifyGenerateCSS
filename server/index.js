@@ -36,7 +36,7 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 // 启动服务器
-const PORT = process.env.PORT || 3000;
+const PORT = 7199;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
   
