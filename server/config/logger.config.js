@@ -20,5 +20,15 @@ module.exports = {
   console: {
     enabled: true,
     level: 'debug',
+  },
+  
+  // Loki集成配置
+  loki: {
+    enabled: true,
+    host: 'http://localhost:3100',
+    labels: {
+      app: 'font-service',
+      environment: process.env.NODE_ENV || 'development'
+    }
   }
 };
