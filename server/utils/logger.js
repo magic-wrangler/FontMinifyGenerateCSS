@@ -2,6 +2,7 @@
 const winston = require('winston');
 const { createLogger, format, transports } = winston;
 const DailyRotateFile = require('winston-daily-rotate-file');
+const LokiTransport = require('winston-loki');
 const path = require('path');
 const config = require('../config/logger.config');
 const fs = require('fs');
@@ -70,6 +71,18 @@ if (config.console.enabled) {
   }));
 }
 
+// 添加Loki传输（如果启用）
+if (config.loki && config.loki.enabled) {
+  logTransports.push(new LokiTransport({
+    host: config.loki.host,
+    labels: config.loki.labels,
+    json: true,
+    format: format.json(),
+    replaceTimestamp: true,
+    onConnectionError: (err) => console.error('Loki连接错误:', err)
+  }));
+}
+
 // 创建logger实例
 const logger = createLogger({
   level: config.level,
@@ -89,7 +102,19 @@ const accessLogger = createLogger({
     format.timestamp(),
     format.json()
   ),
-  transports: [accessFileTransport],
+  transports: [
+    accessFileTransport,
+    // 如果启用Loki，也将访问日志发送到Loki
+    ...(config.loki && config.loki.enabled ? [
+      new LokiTransport({
+        host: config.loki.host,
+        labels: { ...config.loki.labels, type: 'access' },
+        json: true,
+        format: format.json(),
+        replaceTimestamp: true
+      })
+    ] : [])
+  ],
   exitOnError: false
 });
 

@@ -24,9 +24,9 @@ module.exports = {
   
   // Loki集成配置
   loki: {
-    enabled: true,
-    host: 'http://localhost:3100',
-    labels: {
+    enabled: true,       // 是否启用Loki
+    host: 'http://localhost:3100', // Loki服务地址
+    labels: {            // 标签配置
       app: 'font-service',
       environment: process.env.NODE_ENV || 'development'
     }
