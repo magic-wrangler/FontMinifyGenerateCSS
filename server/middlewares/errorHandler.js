@@ -2,7 +2,7 @@
  * 全局错误处理中间件
  */
 const { AppError } = require('../utils/errors');
-const logger = require('../utils/logger');
+const { error } = require('../utils/logger');
 
 /**
  * 错误处理中间件
@@ -10,7 +10,7 @@ const logger = require('../utils/logger');
  */
 const errorHandler = (err, req, res, next) => {
   // 记录错误日志
-  logger.error(`[错误] ${err.message}`, {
+  error(`[错误] ${err.message}`, {
     url: req.originalUrl,
     method: req.method,
     stack: err.stack,
@@ -49,7 +49,7 @@ const errorHandler = (err, req, res, next) => {
     return res.status(400).json({
       code: 400,
       success: false,
-      message: '文件大小超出限制',
+      message: '上传文件过大',
       errorCode: 'FILE_TOO_LARGE',
       timestamp: Date.now()
     });
@@ -59,20 +59,20 @@ const errorHandler = (err, req, res, next) => {
     return res.status(400).json({
       code: 400,
       success: false,
-      message: '不支持的文件类型',
-      errorCode: 'UNSUPPORTED_FILE_TYPE',
+      message: '未预期的文件字段',
+      errorCode: 'UNEXPECTED_FILE',
       timestamp: Date.now()
     });
   }
 
-  // 默认服务器错误
+  // 默认服务器错误响应
   return res.status(500).json({
     code: 500,
     success: false,
     message: process.env.NODE_ENV === 'production' 
       ? '服务器内部错误' 
       : err.message || '服务器内部错误',
-    errorCode: 'INTERNAL_ERROR',
+    errorCode: 'INTERNAL_SERVER_ERROR',
     timestamp: Date.now()
   });
 };
