@@ -27,7 +27,7 @@ app.use(responseInterceptor);
 app.use(requestLogger);
 
 // 注册API路由
-app.use('/api', apiRoutes);
+app.use('/font-minify', apiRoutes);
 
 // 404错误处理 - 放在所有路由之后
 app.use(notFoundHandler);
