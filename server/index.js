@@ -37,7 +37,7 @@ app.use(errorHandler);
 
 // 启动服务器
 const PORT = 7199;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
   
   // 确保上传和输出目录存在
@@ -52,5 +52,5 @@ app.listen(PORT, () => {
     fs.mkdirSync(outputDir, { recursive: true });
   }
   
-  console.log('Server initialized successfully');
+  console.log(`Server initialized successfully on port ${PORT}`);
 });
