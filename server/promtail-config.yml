@@ -14,7 +14,8 @@ scrape_configs:
       - targets:
           - localhost
         labels:
-          job: fontapp
+          job: fontminify
+          app: font-service
           __path__: /var/log/app/**/*.log
           
   - job_name: system

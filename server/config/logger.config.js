@@ -24,7 +24,8 @@ module.exports = {
   
   // Loki集成配置
   loki: {
-    enabled: true,       // 是否启用Loki
+    // 生产环境下 启用Loki日志记录
+    enabled: process.env.NODE_ENV === 'production',
     host: 'http://localhost:3100', // Loki服务地址
     labels: {            // 标签配置
       app: 'font-service',

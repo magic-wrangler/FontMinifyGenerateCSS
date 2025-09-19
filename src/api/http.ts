@@ -23,7 +23,7 @@ axios.interceptors.request.use(
 // 响应拦截
 axios.interceptors.response.use((res) => {
   // 存储 sessionId
-  if (res.data.code === 0 && !!res.data.data?.sessionId) {
+  if (res.data.code === 200 && !!res.data.data?.sessionId) {
     localStorage.setItem('sessionId', res.data.data.sessionId);
   }
   return res;

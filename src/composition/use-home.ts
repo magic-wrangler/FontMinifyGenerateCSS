@@ -4,6 +4,7 @@ import { message } from 'ant-design-vue';
 import { emitter, EmitterEvents } from '@/mitt';
 import { fontApi } from '@/api/modules/font';
 import { throttle } from 'lodash-es';
+import { ALL_CHARS } from '@/constant/basic'
 
 export enum FontButtonType {
   BasicCharacters = 'BasicCharacters',
@@ -66,8 +67,17 @@ export const useHome = () => {
       fontButtonType.value = fontButtonType.value.filter(
         (item) => item !== type
       );
+      // 移除字符类型 从 fontText 中移除特定字符
+      // 使用字符串方法而非正则表达式，避免特殊字符问题
+      const charsToRemove = ALL_CHARS.split('');
+      for (const char of charsToRemove) {
+        fontText.value = fontText.value.split(char).join('');
+      }
     } else {
+      // 添加字符类型
       fontButtonType.value.push(type);
+      // fontText 拼接字符 ALL_CHARS
+      fontText.value += ALL_CHARS;
     }
   };
 
@@ -172,20 +182,10 @@ export const useHome = () => {
    * @param file 上传的字体文件
    */
   const updateUploadFiles = async (file?: FileList) => {
-    console.log(
-      '%c🤪 ~ file: use-home.ts:155 [] -> uploadFiles.value : ',
-      'color: #bae48e',
-      uploadFiles.value
-    );
-    const res = await fontApi.uploadFonts({
+    await fontApi.uploadFonts({
       fonts: file ? file : (uploadFiles.value as unknown as FileList[]),
       text: fontText.value,
     });
-    console.log(
-      '%c🤪 ~ file: use-home.ts:135 [] -> res : ',
-      'color: #ed71ce',
-      res
-    );
   };
 
   onBeforeMount(async () => {

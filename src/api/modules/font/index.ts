@@ -35,7 +35,7 @@ export const fontApi: T.IFontApi = {
       })
     );
   },
-  getCss(req) {
-    return http.get(`/css/${req.fontName}`);
+  getCss() {
+    return http.get(`/session/${localStorage.getItem('sessionId')}`);
   },
 };

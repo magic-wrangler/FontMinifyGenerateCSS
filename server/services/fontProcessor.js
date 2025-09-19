@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const logger = require('../utils/logger');
 const { promisify } = require('util');
+const Fontmin = require('fontmin');
 
 /**
  * 处理字体文件并生成CSS
@@ -59,7 +60,7 @@ async function processFontFiles(sessionId, fontNames, text, uploadsDir, outputDi
       
       // 如果目录仍然不存在，记录错误并跳过
       if (!fs.existsSync(fontDir)) {
-        logger.logError(`Font directory not found: ${fontDir}`, new Error('Font not found'));
+        logger.error(`Font directory not found: ${fontDir}`, new Error('Font not found'));
         continue;
       }
 
@@ -69,11 +70,11 @@ async function processFontFiles(sessionId, fontNames, text, uploadsDir, outputDi
       );
 
       if (!fontFiles || fontFiles.length === 0) {
-        logger.logError(`No font files found in: ${fontDir}`, new Error('No font files'));
+        logger.error(`No font files found in: ${fontDir}`, new Error('No font files'));
         continue;
       }
     } catch (err) {
-      logger.logError(`Error processing font ${fontName}`, err);
+      logger.error(`Error processing font ${fontName}`, err);
       continue;
     }
 
@@ -87,21 +88,54 @@ async function processFontFiles(sessionId, fontNames, text, uploadsDir, outputDi
         fs.mkdirSync(outputFontDir, { recursive: true });
       }
     } catch (err) {
-      logger.logError(`Error creating output directory for ${fontName}`, err);
+      logger.error(`Error creating output directory for ${fontName}`, err);
       continue;
     }
 
-    // 这里应该有实际的字体处理逻辑
-    // 为了示例，我们只是复制文件并创建一个简单的CSS
+    // 使用 fontmin 处理字体文件
     const outputFontPath = path.join(outputFontDir, fontFile);
-    fs.copyFileSync(fontPath, outputFontPath);
+    
+    try {
+      // 创建 Fontmin 实例
+      const fontmin = new Fontmin()
+        .src(fontPath)
+        .dest(outputFontDir)
+        .use(Fontmin.glyph({
+          text: text || '',  // 如果没有提供文本，则使用空字符串
+          hinting: false     // 禁用 hinting 以减小文件大小
+        }));
+
+      // 根据字体类型添加适当的插件
+      if (fontFile.endsWith('.ttf')) {
+        fontmin.use(Fontmin.ttf2woff());  // 转换为 woff 格式
+      }
+
+      // 执行字体处理
+       await new Promise((resolve, reject) => {
+         fontmin.run((err, files) => {
+           if (err) {
+             logger.error(`Fontmin processing error: ${err.message}`, err);
+             return reject(err);
+           }
+            
+            logger.info(`Fontmin processed ${files.length} files for ${fontName}`);
+            resolve();
+          });
+        });
+        
+        logger.info(`Successfully processed font ${fontName} with Fontmin`);
+     } catch (fontminErr) {
+       logger.error(`Error processing font with Fontmin: ${fontName}`, fontminErr);
+       // 如果 fontmin 处理失败，回退到简单复制
+       fs.copyFileSync(fontPath, outputFontPath);
+     }
 
     // 获取字体文件的base64编码
     let base64Data = null;
     try {
-      base64Data = getBase64FontData(fontPath);
+      base64Data = getBase64FontData(outputFontPath);
     } catch (base64Err) {
-      logger.logError(`Error generating base64 data for ${fontName}`, base64Err);
+      logger.error(`Error generating base64 data for ${fontName}`, base64Err);
       // 继续处理，不使用base64
     }
     
@@ -227,7 +261,7 @@ function getBase64FontData(filePath) {
     // 转换为base64
     return fontData.toString('base64');
   } catch (err) {
-    logger.logError(`Error converting font to base64: ${filePath}`, err);
+    logger.error(`Error converting font to base64: ${filePath}`, err);
     return null;
   }
 }

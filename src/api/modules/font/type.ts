@@ -26,7 +26,7 @@ interface GenerateCssRes {
 }
 
 interface GetCssReq {
-  fontName: string;
+  sessionId: string;
 }
 
 interface GetCssRes {
@@ -39,6 +39,6 @@ export interface IFontApi {
   /** 生成 css 文件 */
   generateCss: (req: GenerateCssReq) => Promise<ResType<GenerateCssRes>>;
   /** 获取 css 文件内容 */
-  getCss: (req: GetCssReq) => Promise<ResType<GetCssRes>>;
+  getCss: () => Promise<ResType<GetCssRes>>;
 }
 

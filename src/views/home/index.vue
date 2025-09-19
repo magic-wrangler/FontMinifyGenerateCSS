@@ -30,13 +30,8 @@
             btn-text="Basic Characters"
             v-report.click="'FontMinifyGenerateCSS.home.basicCharacters'"
           />
-          <FontButton
-            :is-check="isPunctuation"
-            @click="handleCheck(FontButtonType.Punctuation)"
-            btn-text="Punctuation"
-          />
         </div>
-        <h3
+        <!-- <h3
           class="text-white text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4"
         >
           Compression Options
@@ -45,14 +40,14 @@
           <p
             class="text-white text-base font-medium leading-normal pb-2 px-4 py-3 flex items-center gap-2"
           >
-            <span>Include unicode-range in CSS</span>
+            <span>Include unicode-range in CSS</span> -->
             <!-- 通过在@font-face规则中添加unicode-range属性，浏览器只会下载包含页面上使用的字符的字体文件，从而减小字体文件大小并提高网页加载速度。
               基本拉丁字母（英文）：U+0000-007F
               拉丁文补充：U+0080-00FF
               基本希腊语：U+0370-03FF
               中日韩统一表意文字（常用汉字）：U+4E00-9FFF
               韩文音节：U+AC00-D7AF --> 
-            <Tooltip placement="right" color="#253346">
+            <!-- <Tooltip placement="right" color="#253346">
               <template #title>
                 <div class="caption1-reg pb-2 font-Space_Grotesk">
                   By adding the unicode-range attribute in the @font-face rule, the browser will only download the font file containing the characters used on the page, thereby reducing the font file size and improving the web page loading speed.
@@ -103,12 +98,17 @@
               tips="韩文音节"
             />
           </div>
-        </div>
+        </div> -->
         <div class="flex justify-center pt-12">
           <FontButton
             type="primary"
             btn-text="Start Compression"
             @click="handleGenerate"
+          />
+          <FontButton
+            type="primary"
+            btn-text="Get CSS"
+            @click="fontApi.getCss()"
           />
         </div>
         <Loading :loading="spinning" mask />
@@ -120,13 +120,13 @@
 <script setup lang="ts">
 import { useHome, FontButtonType, UnicodeRange } from '@/composition/use-home';
 import { Tooltip } from 'ant-design-vue';
+import { fontApi } from '@/api/modules/font';
 
 const {
   spinning,
   homeInfo,
   fontText,
   isBasicCharacters,
-  isPunctuation,
   isBasicLatin,
   isLatinSupplement,
   isGreek,

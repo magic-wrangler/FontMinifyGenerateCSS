@@ -93,7 +93,7 @@ exports.uploadFonts = (req, res, next) => {
     }, SUCCESS_MESSAGES.UPLOAD_SUCCESS);
   } catch (err) {
     // 记录错误到日志文件
-    logger.logError(ERROR_MESSAGES.UPLOAD_PROCESSING_ERROR, err, {
+    logger.error(ERROR_MESSAGES.UPLOAD_PROCESSING_ERROR, err, {
       sessionId: req.body.sessionId,
     });
     return next(new BusinessError(ERROR_MESSAGES.UPLOAD_PROCESSING_ERROR));
@@ -139,7 +139,7 @@ exports.generateCSS = async (req, res, next) => {
     return success(res, result, SUCCESS_MESSAGES.GENERATE_SUCCESS);
   } catch (err) {
     // 记录错误到日志文件
-    logger.logError(ERROR_MESSAGES.GENERATE_PROCESSING_ERROR, err, {
+    logger.error(ERROR_MESSAGES.GENERATE_PROCESSING_ERROR, err, {
       sessionId: req.body.sessionId,
     });
     return next(new BusinessError(ERROR_MESSAGES.GENERATE_PROCESSING_ERROR));
@@ -202,7 +202,7 @@ exports.getSessionInfo = (req, res, next) => {
 
     return success(res, sessionInfo, SUCCESS_MESSAGES.SESSION_FOUND);
   } catch (err) {
-    logger.logError(ERROR_MESSAGES.SESSION_PROCESSING_ERROR, err, {
+    logger.error(ERROR_MESSAGES.SESSION_PROCESSING_ERROR, err, {
       sessionId: req.params.sessionId,
     });
     return next(new BusinessError(ERROR_MESSAGES.SESSION_PROCESSING_ERROR));
