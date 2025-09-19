@@ -253,6 +253,8 @@ const emit = defineEmits<{
   (e: 'change', files: FileList | null): void;
   /** v-model更新事件 */
   (e: 'update:modelValue', files: FileList | null): void;
+  /** 删除文件事件 */
+  (e: 'delete', fileName: string): void;
 }>();
 
 /**
@@ -289,6 +291,8 @@ const deleteFile = (index: number) => {
   emit('update:modelValue', updatedFiles);
   // 触发事件
   // emit('change', updatedFiles);
+  // 触发删除事件
+  emit('delete', fileName);
 };
 
 // input 上传文件Ref

@@ -37,37 +37,65 @@
       },
       "id": 2,
       "options": {
-        "showLabels": false,
+        "showLabels": true,
         "showTime": true,
         "sortOrder": "Descending",
-        "wrapLogMessage": true
+        "wrapLogMessage": true,
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false
       },
+      "collapsed": true,
       "pluginVersion": "7.1.1",
       "targets": [
         {
           "expr": "{job=\"fontapp\"}",
-          "refId": "A"
+          "refId": "A",
+          "legendFormat": "{{level}}"
         }
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "应用日志",
+      "title": "应用日志监控面板",
+      "description": "显示所有应用日志，包括信息、警告和错误",
+      "transparent": false,
       "type": "logs"
     },
     {
-      "aliasColors": {},
+      "aliasColors": {
+        "错误数": "red"
+      },
       "bars": false,
       "dashLength": 10,
       "dashes": false,
       "datasource": "Loki",
+      "description": "显示系统错误数量趋势，帮助及时发现异常",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {},
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 5
+              },
+              {
+                "color": "red",
+                "value": 10
+              }
+            ]
+          }
         },
         "overrides": []
       },
       "fill": 1,
-      "fillGradient": 0,
+      "fillGradient": 5,
       "gridPos": {
         "h": 8,
         "w": 12,
@@ -77,21 +105,21 @@
       "hiddenSeries": false,
       "id": 4,
       "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
         "show": true,
-        "total": false,
-        "values": false
+        "total": true,
+        "values": true
       },
       "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
+      "linewidth": 2,
+      "nullPointMode": "connected",
       "percentage": false,
       "pluginVersion": "7.1.1",
-      "pointradius": 2,
-      "points": false,
+      "pointradius": 3,
+      "points": true,
       "renderer": "flot",
       "seriesOverrides": [],
       "spaceLength": 10,
@@ -99,22 +127,39 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(count_over_time({job=\"fontapp\"} |~ \"level=\\\"error\\\"\" [5m])) by (job)",
+          "expr": "sum(count_over_time({job=\"fontapp\"} |~ \"\\\"level\\\":\\\"error\\\"\" [5m])) by (job)",
           "legendFormat": "错误数",
           "refId": "A"
         }
       ],
-      "thresholds": [],
+      "thresholds": [
+        {
+          "colorMode": "critical",
+          "fill": true,
+          "line": true,
+          "op": "gt",
+          "value": 10,
+          "yaxis": "left"
+        },
+        {
+          "colorMode": "warning",
+          "fill": true,
+          "line": true,
+          "op": "gt",
+          "value": 5,
+          "yaxis": "left"
+        }
+      ],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "错误数量",
+      "title": "系统错误数量监控",
       "tooltip": {
         "shared": true,
         "sort": 0,
         "value_type": "individual"
       },
-      "type": "graph",
+      "type": "timeseries",
       "xaxis": {
         "buckets": null,
         "mode": "time",
@@ -125,10 +170,10 @@
       "yaxes": [
         {
           "format": "short",
-          "label": null,
+          "label": "错误数量",
           "logBase": 1,
           "max": null,
-          "min": null,
+          "min": "0",
           "show": true
         },
         {
@@ -137,7 +182,7 @@
           "logBase": 1,
           "max": null,
           "min": null,
-          "show": true
+          "show": false
         }
       ],
       "yaxis": {
@@ -146,11 +191,14 @@
       }
     },
     {
-      "aliasColors": {},
+      "aliasColors": {
+        "请求数": "blue"
+      },
       "bars": false,
       "dashLength": 10,
       "dashes": false,
       "datasource": "Loki",
+      "description": "显示系统HTTP请求数量趋势，监控系统负载",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -158,7 +206,7 @@
         "overrides": []
       },
       "fill": 1,
-      "fillGradient": 0,
+      "fillGradient": 5,
       "gridPos": {
         "h": 8,
         "w": 12,
@@ -168,21 +216,21 @@
       "hiddenSeries": false,
       "id": 6,
       "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
         "show": true,
-        "total": false,
-        "values": false
+        "total": true,
+        "values": true
       },
       "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
+      "linewidth": 2,
+      "nullPointMode": "connected",
       "percentage": false,
       "pluginVersion": "7.1.1",
-      "pointradius": 2,
-      "points": false,
+      "pointradius": 3,
+      "points": true,
       "renderer": "flot",
       "seriesOverrides": [],
       "spaceLength": 10,
@@ -199,13 +247,13 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "HTTP请求数",
+      "title": "HTTP请求量监控",
       "tooltip": {
         "shared": true,
         "sort": 0,
         "value_type": "individual"
       },
-      "type": "graph",
+      "type": "timeseries",
       "xaxis": {
         "buckets": null,
         "mode": "time",
@@ -216,10 +264,10 @@
       "yaxes": [
         {
           "format": "short",
-          "label": null,
+          "label": "请求数/5分钟",
           "logBase": 1,
           "max": null,
-          "min": null,
+          "min": "0",
           "show": true
         },
         {
@@ -228,13 +276,189 @@
           "logBase": 1,
           "max": null,
           "min": null,
-          "show": true
+          "show": false
         }
       ],
       "yaxis": {
         "align": false,
         "alignLevel": null
       }
+    },
+    {
+      "aliasColors": {
+        "平均响应时间": "orange"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Loki",
+      "description": "显示系统响应时间趋势，监控系统性能",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 5,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 16
+      },
+      "hiddenSeries": false,
+      "id": 8,
+      "legend": {
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pluginVersion": "7.1.1",
+      "pointradius": 3,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "avg(sum_over_time({job=\"fontapp\"} | json | unwrap responseTime [5m])) by (job)",
+          "legendFormat": "平均响应时间",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [
+        {
+          "colorMode": "critical",
+          "fill": true,
+          "line": true,
+          "op": "gt",
+          "value": 500,
+          "yaxis": "left"
+        },
+        {
+          "colorMode": "warning",
+          "fill": true,
+          "line": true,
+          "op": "gt",
+          "value": 200,
+          "yaxis": "left"
+        }
+      ],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "响应时间监控",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "timeseries",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "ms",
+          "label": "响应时间",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": "Loki",
+      "description": "显示系统资源使用情况",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 16
+      },
+      "id": 10,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.1.1",
+      "targets": [
+        {
+          "expr": "sum(count_over_time({job=\"fontapp\"} |~ \"\\\"level\\\":\\\"info\\\"\" [24h])) by (job)",
+          "legendFormat": "今日请求总量",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(count_over_time({job=\"fontapp\"} |~ \"\\\"level\\\":\\\"error\\\"\" [24h])) by (job)",
+          "legendFormat": "今日错误总量",
+          "refId": "B"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "系统运行状态统计",
+      "type": "stat"
     }
   ],
   "refresh": "10s",

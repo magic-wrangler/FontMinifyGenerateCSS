@@ -108,7 +108,7 @@ onUnmounted(() => {
   &--blur {
   }
   &--nav {
-    background-color: transparent;
+    background-color: #121820;
     // background-image: radial-gradient(
     //   transparent 1px,
     //   var(--token-header-nav-bg-color, #ffffff) 1px

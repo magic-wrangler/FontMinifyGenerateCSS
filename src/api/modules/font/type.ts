@@ -33,6 +33,22 @@ interface GetCssRes {
   cssContent: string;
 }
 
+interface GetFilesReq {
+  sessionId?: string;
+  fileNames: string[];
+}
+
+interface Files {
+  content: string;
+  name: string;
+  type: string;
+  parentFolder: string;
+}
+
+interface GetFilesRes {
+  files: Files[];
+}
+
 export interface IFontApi {
   /** 上传字体文件 */
   uploadFonts: (req: UploadFontsReq) => Promise<ResType<UploadFontsRes>>;
@@ -40,5 +56,6 @@ export interface IFontApi {
   generateCss: (req: GenerateCssReq) => Promise<ResType<GenerateCssRes>>;
   /** 获取 css 文件内容 */
   getCss: () => Promise<ResType<GetCssRes>>;
+  /** 获取指定文件内容 */
+  getFiles: (req: GetFilesReq) => Promise<ResType<GetFilesRes>>;
 }
-

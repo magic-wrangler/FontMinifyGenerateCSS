@@ -4,7 +4,8 @@ import { message } from 'ant-design-vue';
 import { emitter, EmitterEvents } from '@/mitt';
 import { fontApi } from '@/api/modules/font';
 import { throttle } from 'lodash-es';
-import { ALL_CHARS } from '@/constant/basic'
+import { ALL_CHARS } from '@/constant/basic';
+import { downloadMultipleFiles } from '@/utils';
 
 export enum FontButtonType {
   BasicCharacters = 'BasicCharacters',
@@ -39,6 +40,14 @@ export const useHome = () => {
    */
   const fontText = ref<string>('');
 
+  const fontPreview = ref<string>('');
+
+  const fontPreviewStyle = computed(() => {
+    return {
+      'font-family': fontNames.value.join(', '),
+    };
+  });
+
   /**
    * 选中的字体按钮
    */
@@ -57,6 +66,18 @@ export const useHome = () => {
   const isPunctuation = computed(() => {
     return fontButtonType.value.includes(FontButtonType.Punctuation);
   });
+
+  const fontNames = ref<string[]>([]);
+
+  watch(() => uploadFiles.value, (newVal) => {
+    if (newVal) {
+      fontNames.value = Array.from(newVal).map((item) => {
+        const path = item.name.split('.');
+        path[1] = path[1].toLowerCase();
+        return path.join('.').replace('.ttf', '');
+      });
+    }
+  })
 
   /**
    * 处理选中的字体按钮
@@ -82,55 +103,6 @@ export const useHome = () => {
   };
 
   /**
-   * 选中的字体范围
-   */
-  const unicodeRange = ref<UnicodeRange[]>([]);
-
-  const isBasicLatin = computed(() => {
-    return unicodeRange.value.includes(UnicodeRange.BasicLatin);
-  });
-
-  /**
-   * 基本拉丁字母
-   */
-  const isLatinSupplement = computed(() => {
-    return unicodeRange.value.includes(UnicodeRange.LatinSupplement);
-  });
-
-  /**
-   * 希腊字母
-   */
-  const isGreek = computed(() => {
-    return unicodeRange.value.includes(UnicodeRange.Greek);
-  });
-
-  /**
-   * 中文字符
-   */
-  const isCJK = computed(() => {
-    return unicodeRange.value.includes(UnicodeRange.CJK);
-  });
-
-  /**
-   * 韩文
-   */
-  const isKorean = computed(() => {
-    return unicodeRange.value.includes(UnicodeRange.Korean);
-  });
-
-  /**
-   * 处理选中的字体按钮
-   * @param type 字体按钮类型
-   */
-  const handleCheckUnicodeRange = (type: UnicodeRange) => {
-    if (unicodeRange.value.includes(type)) {
-      unicodeRange.value = unicodeRange.value.filter((item) => item !== type);
-    } else {
-      unicodeRange.value.push(type);
-    }
-  };
-
-  /**
    * 生成压缩字体css
    */
   const handleGenerate = async () => {
@@ -140,23 +112,56 @@ export const useHome = () => {
     }
     try {
       showSpinning();
-      // 上传的字体文件的名称 替换后缀 .ttf
-      const fontNames = uploadFiles.value
-        ? Array.from(uploadFiles.value).map((item) =>
-            item.name.replace('.ttf', '')
-          )
-        : [];
       const res = await fontApi.generateCss({
-        fontNames,
+        fontNames: fontNames.value,
         text: fontText.value,
       });
       if (res.code === 200) {
+        await getGeneratedCss();
         hideSpinning();
       }
     } catch (error) {
       hideSpinning();
     }
   };
+
+  const getGeneratedCss = async () => {
+    const res = await fontApi.getFiles({
+      fileNames: fontNames.value,
+    });
+    if (res.code === 200) {
+      const { files } = res.data!;
+      const cssFile = files.filter((item) => item.type === 'css');
+      cssFile.forEach((css) => insertCss(css.content, css.parentFolder));
+    }
+  };
+
+  /**
+   * 插入 css style 内容至 网页
+   * */
+  const insertCss = (cssContent: string, fontName: string) => {
+    // 创建新的样式标签
+    const style = document.createElement('style');
+    style.type = 'text/css';
+    style.innerHTML = cssContent;
+    style.setAttribute('data-font-name', fontName);
+    document.head.appendChild(style);
+  };
+
+  // 删除 css style 内容至 网页
+  const removeCss = (fontName: string) => {
+    const oldStyle = document.querySelector(
+      `style[data-font-name="${fontName}"]`
+    );
+    if (oldStyle) {
+      oldStyle.remove();
+    }
+  }
+
+  const handleDelete = (fontName: string) => {
+    const name = fontName.split('.')[0];
+    removeCss(name);
+  }
 
   const throttleUpdateUploadFiles = throttle(() => updateUploadFiles(), 1000);
 
@@ -188,6 +193,19 @@ export const useHome = () => {
     });
   };
 
+  /**
+   * 下载字体压缩包
+   */
+  const handleDownloadFontZip = async () => {
+    const res = await fontApi.getFiles({
+      fileNames: fontNames.value,
+    });
+    if (res.code === 200) {
+      const { files } = res.data!;
+      await downloadMultipleFiles(files);
+    }
+  };
+
   onBeforeMount(async () => {
     await getHomeInfo();
     emitter.emit(EmitterEvents.DATA_LOADED, {
@@ -196,6 +214,7 @@ export const useHome = () => {
   });
 
   return {
+    fontPreview,
     spinning,
     homeInfo,
     uploadFiles,
@@ -203,17 +222,13 @@ export const useHome = () => {
     fontButtonType,
     isBasicCharacters,
     isPunctuation,
-    unicodeRange,
-    isBasicLatin,
-    isLatinSupplement,
-    isGreek,
-    isCJK,
-    isKorean,
-    handleCheckUnicodeRange,
+    fontPreviewStyle,
     handleCheck,
     handleGenerate,
     updateUploadFiles,
     handleFileChange,
+    handleDownloadFontZip,
+    handleDelete,
   };
 };
 

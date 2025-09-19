@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
+const { cleanupExpiredSessions } = require('./utils/cleanup');
 
 // 导入中间件
 const responseInterceptor = require('./middlewares/responseInterceptor');
@@ -53,4 +54,11 @@ app.listen(PORT, '0.0.0.0', () => {
   }
   
   console.log(`Server initialized successfully on port ${PORT}`);
+  
+  // 设置定期清理任务，每24小时执行一次
+  setInterval(cleanupExpiredSessions, 24 * 60 * 60 * 1000);
+  console.log('文件自动清理任务已设置，将每24小时执行一次');
+  
+  // 服务启动时执行一次清理
+  cleanupExpiredSessions();
 });

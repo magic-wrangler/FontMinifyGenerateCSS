@@ -13,6 +13,9 @@ router.post('/upload-fonts', upload.array('fonts'), fontController.uploadFonts);
 router.post('/generate-css', fontController.generateCSS);
 
 // 获取会话信息的API端点
-router.get('/session/:sessionId', fontController.getSessionInfo);
+// router.get('/session/:sessionId', fontController.getSessionInfo);
+
+// 获取指定文件内容的API端点
+router.post('/get-files', fontController.getSpecificFiles);
 
 module.exports = router;

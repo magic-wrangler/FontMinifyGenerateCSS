@@ -50,12 +50,17 @@ async function processFontFiles(sessionId, fontNames, text, uploadsDir, outputDi
       // 处理字体名称，替换特殊字符为下划线，确保路径有效
       const sanitizedFontName = fontName.replace(/\s+/g, '_').replace(/[^\w\-\.]/g, '_');
       
-      // 尝试查找原始名称的目录
-      fontDir = path.join(sessionDir, fontName);
+      // 移除可能的文件扩展名（如.TTF、.OTF等）
+      const fontNameWithoutExt = fontName.replace(/\.(ttf|otf|woff|woff2)$/i, '');
+      
+      // 尝试查找原始名称的目录（不带扩展名）
+      fontDir = path.join(sessionDir, fontNameWithoutExt);
       
       // 如果原始名称目录不存在，尝试使用清理后的名称
       if (!fs.existsSync(fontDir)) {
-        fontDir = path.join(sessionDir, sanitizedFontName);
+        // 同样移除清理后名称中可能的文件扩展名
+        const sanitizedFontNameWithoutExt = sanitizedFontName.replace(/\.(ttf|otf|woff|woff2)$/i, '');
+        fontDir = path.join(sessionDir, sanitizedFontNameWithoutExt);
       }
       
       // 如果目录仍然不存在，记录错误并跳过
@@ -64,14 +69,24 @@ async function processFontFiles(sessionId, fontNames, text, uploadsDir, outputDi
         continue;
       }
 
-      // 查找字体文件
+      // 查找字体文件（不区分大小写）
       fontFiles = fs.readdirSync(fontDir).filter(
-        (file) => file.endsWith('.ttf') || file.endsWith('.otf') || file.endsWith('.woff') || file.endsWith('.woff2')
+        (file) => /\.(ttf|otf|woff|woff2)$/i.test(file)
       );
 
+      // 如果没有找到字体文件，尝试查找任何文件作为备选
       if (!fontFiles || fontFiles.length === 0) {
-        logger.error(`No font files found in: ${fontDir}`, new Error('No font files'));
-        continue;
+        // 获取目录中的所有文件
+        const allFiles = fs.readdirSync(fontDir);
+        
+        // 如果有任何文件，使用第一个文件
+        if (allFiles && allFiles.length > 0) {
+          logger.info(`No standard font files found in: ${fontDir}, using available file: ${allFiles[0]}`);
+          fontFiles = [allFiles[0]];
+        } else {
+          logger.error(`No files found in: ${fontDir}`, new Error('No font files'));
+          continue;
+        }
       }
     } catch (err) {
       logger.error(`Error processing font ${fontName}`, err);
@@ -82,7 +97,10 @@ async function processFontFiles(sessionId, fontNames, text, uploadsDir, outputDi
       // 处理字体文件
       fontFile = fontFiles[0]; // 使用第一个字体文件
       fontPath = path.join(fontDir, fontFile);
-      outputFontDir = path.join(outputSessionDir, fontName);
+      
+      // 移除字体名称中的扩展名，确保输出文件夹名称不包含扩展名
+      const cleanFontName = fontName.replace(/\.(ttf|otf|woff|woff2)$/i, '');
+      outputFontDir = path.join(outputSessionDir, cleanFontName);
       
       if (!fs.existsSync(outputFontDir)) {
         fs.mkdirSync(outputFontDir, { recursive: true });
@@ -141,7 +159,10 @@ async function processFontFiles(sessionId, fontNames, text, uploadsDir, outputDi
     
     // 创建CSS文件，如果有base64数据则包含base64 URL
     const cssContent = generateCSS(fontName, fontFile, text, { base64Data });
-    const cssPath = path.join(outputFontDir, `${fontName}.css`);
+    
+    // 移除字体名称中的扩展名，确保CSS文件名称不包含扩展名
+    const cleanFontName = fontName.replace(/\.(ttf|otf|woff|woff2)$/i, '');
+    const cssPath = path.join(outputFontDir, `${cleanFontName}.css`);
     fs.writeFileSync(cssPath, cssContent);
 
     results.push({
@@ -214,24 +235,25 @@ function generateCSS(fontName, fontFile, text, options = {}) {
   // 获取字体格式
   const format = getFormatFromFileName(fontFile);
   
+  // 移除字体名称中的扩展名
+  const cleanFontName = fontName.replace(/\.(ttf|otf|woff|woff2)$/i, '');
+  
   // 构建 src 属性
   let srcAttribute = '';
   
   // 如果提供了 base64 数据，添加 base64 URL
   if (options.base64Data) {
-    const base64Url = `data:font/${format};charset=utf-8;base64,${options.base64Data}`;
+    const base64Url = `data:application/x-font-ttf;charset=utf-8;base64,${options.base64Data}`;
     srcAttribute += `  src: url('${base64Url}') format('${format}');\n`;
   }
   
   // 添加文件 URL
-  srcAttribute += `  src: url('./${fontFile}') format('${format}')`;
+  srcAttribute += `  /* src: url('./${fontFile}') format('${format}') */`;
   
   // 创建 @font-face 规则
   return `@font-face {
-  font-family: '${fontName}';
+  font-family: '${cleanFontName}';
 ${srcAttribute};
-  font-weight: normal;
-  font-style: normal;
 }
 `;
 }

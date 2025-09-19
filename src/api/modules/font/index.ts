@@ -38,4 +38,12 @@ export const fontApi: T.IFontApi = {
   getCss() {
     return http.get(`/session/${localStorage.getItem('sessionId')}`);
   },
+  getFiles(req) {
+    return http.post(
+      '/get-files',
+      Object.assign(req, {
+        sessionId: localStorage.getItem('sessionId') || undefined,
+      })
+    );
+  },
 };
